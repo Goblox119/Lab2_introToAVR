@@ -1,0 +1,34 @@
+/*	Author: Adam Gunter
+ *  Partner(s) Name: Jo Smith
+ *	Lab Section: 21
+ *	Assignment: Lab #2  Exercise #
+ *	Exercise Description: [optional - include for your own benefit]
+ *
+ *	I acknowledge all content contained herein, excluding template or example
+ *	code, is my own original work.
+ */
+#include <avr/io.h>
+#ifdef _SIMULATE_
+#include "simAVRHeader.h"
+#endif
+
+int main(void) {
+    /* Insert DDR and PORT initializations */
+    DDRA = 0x00; PORTA = 0xFF; // Configure port A's 8 pins as inputs
+    DDRC = 0xFF; PORTC = 0x00; // Configure port C's 8 pins as outputs, initialize to 0's
+    unsigned char tmpA = 0x00; // Temporary variable to hold the rightmost bit of A
+    unsigned char cntavail; // Temporary variable to hold the value of C
+    /* Insert your solution below */
+    while (1) {
+	// 1) Read input
+	tmpA = PINA & 0x0F;
+	// 2) Perform computation
+	if (tmpA == 0x01 || tmpA == 0x02 || tmpA == 0x04 || tmpA == 0x08) { cntavail = 0x01; }
+	if (tmpA == 0x03 || tmpA == 0x05 || tmpA == 0x06 || tmpA == 0x09 || tmpA == 0x0A || tmpA == 0x0C) { cntavail = 0x02; }
+	if (tmpA == 0x07 || tmpA == 0x0B || tmpA == 0x0D || tmpA == 0x0E) { cntavail = 0x03; }
+	if (tmpA == 0x0F) { cntavail = 0x04; }
+	// 3) Write output
+	PORTC = cntavail;
+    }
+    return 0;
+}
